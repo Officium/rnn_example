@@ -39,7 +39,7 @@ def step():
             x = torch.zeros(sample_num, x_dim)  # EOS
         else:
             x = torch.zeros(sample_num, x_dim).scatter_(1, torch.Tensor(train_x[:, [i-1]]).long(), 1)
-        hx, cx = encoder(x.float(), (hx, cx))
+        hx, cx = decoder(x.float(), (hx, cx))
         loss += -output(hx).gather(1, torch.Tensor(train_x[:, [i]]).long()).mean() / sample_len
 
     optim.zero_grad()

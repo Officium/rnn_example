@@ -43,7 +43,7 @@ def step():
     for i in range(sample_len):
         weights = softmax(torch.cat([(_hx * hx).sum(-1).unsqueeze(1) for _hx in hxs], 1), 1).unsqueeze(2).repeat(1, 1, hidden_size)  # batch * len * hidden
         x = (weights * xs).sum(1)  # batch * hidden
-        hx, cx = encoder(x.float(), (hx, cx))
+        hx, cx = decoder(x.float(), (hx, cx))
         loss += -output(hx).gather(1, torch.Tensor(train_x[:, [i]]).long()).mean() / sample_len
 
     optim.zero_grad()
